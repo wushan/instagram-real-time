@@ -1,6 +1,6 @@
 var express = require("express");
 var app = express();
-var port = process.env.PORT || 3700;
+var port = process.env.PORT || 80;
 var io = require('socket.io').listen(app.listen(port));
 var Instagram = require('instagram-node-lib');
 var http = require('http');
@@ -18,16 +18,16 @@ var pub = __dirname + '/public',
  * Set the 'client ID' and the 'client secret' to use on Instagram
  * @type {String}
  */
-var clientID = 'YOUR_CLIENT_ID',
-    clientSecret = 'YOUR_CLIENT_SECRET';
+var clientID = '5c4e60cc6de3451187b3d276d173ca62',
+    clientSecret = '868a4f87cb99458683a720aeeea884f4';
 
 /**
  * Set the configuration
  */
 Instagram.set('client_id', clientID);
 Instagram.set('client_secret', clientSecret);
-Instagram.set('callback_url', 'http://YOUR_URL.com/callback');
-Instagram.set('redirect_uri', 'http://YOUR_URL.com');
+Instagram.set('callback_url', 'http://middlemiddle.com/callback');
+Instagram.set('redirect_uri', 'http://middlemiddle.com');
 Instagram.set('maxSockets', 10);
 
 /**
@@ -37,9 +37,9 @@ Instagram.set('maxSockets', 10);
  */
 Instagram.subscriptions.subscribe({
   object: 'tag',
-  object_id: 'lollapalooza',
+  object_id: 'walkinghomeco',
   aspect: 'media',
-  callback_url: 'http://YOUR_URL.com/callback',
+  callback_url: 'http://middlemiddle.com/callback',
   type: 'subscription',
   id: '#'
 });
@@ -49,32 +49,32 @@ Instagram.subscriptions.subscribe({
  * with the tag "hashtag" lollapalooza2013
  * @type {String}
  */
-Instagram.subscriptions.subscribe({
-  object: 'tag',
-  object_id: 'lollapalooza2013',
-  aspect: 'media',
-  callback_url: 'http://YOUR_URL.com/callback',
-  type: 'subscription',
-  id: '#'
-});
+// Instagram.subscriptions.subscribe({
+//   object: 'tag',
+//   object_id: 'lollapalooza2013',
+//   aspect: 'media',
+//   callback_url: 'http://middlemiddle.com/callback',
+//   type: 'subscription',
+//   id: '#'
+// });
 
 /**
  * Uses the library "instagram-node-lib" to Subscribe to the Instagram API Real Time
  * with the tag "hashtag" lolla2013
  * @type {String}
  */
-Instagram.subscriptions.subscribe({
-  object: 'tag',
-  object_id: 'lolla2013',
-  aspect: 'media',
-  callback_url: 'http://YOUR_URL.com/callback',
-  type: 'subscription',
-  id: '#'
-});
+// Instagram.subscriptions.subscribe({
+//   object: 'tag',
+//   object_id: 'lolla2013',
+//   aspect: 'media',
+//   callback_url: 'http://middlemiddle.com/callback',
+//   type: 'subscription',
+//   id: '#'
+// });
 
 // if you want to unsubscribe to any hashtag you subscribe
 // just need to pass the ID Instagram send as response to you
-Instagram.subscriptions.unsubscribe({ id: '3668016' });
+Instagram.subscriptions.unsubscribe({ id: '20187660' });
 
 // https://devcenter.heroku.com/articles/using-socket-io-with-node-js-on-heroku
 io.configure(function () {
@@ -116,7 +116,7 @@ app.get("/views", function(req, res){
  */
 io.sockets.on('connection', function (socket) {
   Instagram.tags.recent({
-      name: 'lollapalooza',
+      name: 'walkinghomeco',
       complete: function(data) {
         socket.emit('firstShow', { firstShow: data });
       }
