@@ -72,140 +72,6 @@ a:hover {
    ========================================================================== */
 
 /***********
-* @top fill
-************/
-.topFill {
-	position: fixed;
-	top: 0;
-  left: 13.5%;
-	background: url(../images/top-fill.jpg) repeat-x 0 0;
-  background-size: cover;
-	width: 100%;
-	height: 8px;
-	z-index: 45;
-}
-
-/***********
-* @aside
-************/
-#aside {
-	position: fixed;
-	left: 0;
-	width: 16.640625%;
-	z-index: 40;
-  border-top: 8px solid #f34e52;
-}
-
-/***********
-* @logo
-************/
-.logo {
-	background: #fff;
-}
-.logo img {
-  display: block;
-	width: 100%;
-}
-
-/***********
-* @nav
-************/
-.nav {
-  position: relative;
-	background: rgba(255,255,255, 0.9);
-	-moz-box-shadow: inset 0 6px 10px -7px #000;
-	-webkit-box-shadow: inset 0 6px 10px -7px #000;
-	box-shadow: inset 0 6px 10px -7px #000;
-}
-
-.nav a {
-	display: block;
-	padding: 2% 0 2% 12%;
-	font-size: 18px;
-	font-size: 1.1rem;
-}
-.nav .latest { 
-	font-weight: bold;
-}
-.nav .extra { 
-	color: #aaaaa9;
-}
-
-/* mobile nav */
-.mobNav {
-  display: none;
-  margin: 25px 10px 0 0;
-}
-.mobNav:hover .iconBar {
-  background: #f34e52;
-}
-.iconBar {
-  background: #333;
-  display: block;
-  width: 22px;
-  height: 2px;
-  margin: 5px 0;
-}
-
-/***********
-* @about
-************/
-.aboutWrap {
-  position: absolute;
-  top: 8px;
-  right: 0;
-  width: 100%;
-  z-index: 50;
-  transform: translateX(-10000px);
-  -webkit-transform: translateX(-10000px);
-  -moz-transform: translateX(-10000px);
-  -ms-transform: translateX(-10000px);
-}
-.aboutWrap.active {
-  transform: translateX(0px);
-  -webkit-transform: translateX(0px);
-  -moz-transform: translateX(0px);
-  -ms-transform: translateX(0px);
-}
-#about {
-  background: rgba(255,255,255, 0.9);
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 2%;
-  -moz-box-shadow: inset 6px 4px 10px -7px #000;
-  -webkit-box-shadow: inset 6px 4px 10px -7px #000;
-  box-shadow: inset 6px 4px 10px -7px #000;
-}
-#about .tit {
-  font-size: 28px;
-  font-size: 1.8rem;
-}
-#about .desc {
-  font-size: 15px;
-  font-size: 0.9rem;
-  margin: 15px 0;
-}
-#about .tit, 
-#about .desc {
-  color: #1d1d1d;
-}
-#about .desc a {
-  font-weight: bold;
-  color: #333;
-  text-decoration: underline;
-}
-.btClose {
-  float: right;
-  margin: 2% 2% 0 0;
-}
-.btClose a {
-  background: url(../images/bt-close.png) no-repeat 0 0;
-  width: 42px;
-  height: 42px;
-  display: block;
-}
-
-/***********
 * @Image wrapper
 ************/
 #imgContent {
@@ -219,7 +85,7 @@ a:hover {
 #imgContent img { display: block; }
 #imgContent a {
 	float: left;
-	width: 16.640625%;
+	width: 25%;
 }
 #imgContent img {
 	width: 100%;
@@ -229,44 +95,12 @@ a:hover {
 * @footer
 ************/
 #footer {
-	position: fixed;
-	bottom: 0;
-	background: url(../images/bg-footer.png) no-repeat 0;
-	background-size: cover;
-	width: 100%;
-	height: 302px;
-	z-index: 30;
-	pointer-events: none;
+
 }
 #footer .bottom {
-  width: 100%;
-  height: 50px;
-	position: absolute;
-  bottom: 5px;
-  pointer-events: auto;
+
 }
 
-/* social share */
-.socialShare {
-  margin: 10px 0 0 2%;
-}
-.socialShare li {
-  float: left;
-  margin: 0 10px 0 0;
-}
-.socialShare .icon {
-  background: url(../images/sprite-social.png) no-repeat;
-  width: 25px;
-  height: 27px;
-}
-.icon.icon-fb { background-position: 0px 3px; }
-.icon.icon-tt { background-position: -45px 0px; }
-.icon.icon-g { background-position: -90px 2px; }
-.icon.icon-email { background-position: -135px 1px; }
-
-.bottomLogo {
-  margin: -7px 5% 0 0;
-}
 
 /***********
 * @media queries

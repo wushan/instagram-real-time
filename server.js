@@ -1,6 +1,6 @@
 var express = require("express");
 var app = express();
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 3700;
 var io = require('socket.io').listen(app.listen(port));
 var Instagram = require('instagram-node-lib');
 var http = require('http');
@@ -37,7 +37,7 @@ Instagram.set('maxSockets', 10);
  */
 Instagram.subscriptions.subscribe({
   object: 'tag',
-  object_id: 'walkinghomeco',
+  object_id: 'dog',
   aspect: 'media',
   callback_url: 'http://middlemiddle.com/callback',
   type: 'subscription',
@@ -116,7 +116,7 @@ app.get("/views", function(req, res){
  */
 io.sockets.on('connection', function (socket) {
   Instagram.tags.recent({
-      name: 'walkinghomeco',
+      name: 'dog',
       complete: function(data) {
         socket.emit('firstShow', { firstShow: data });
       }
