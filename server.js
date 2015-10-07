@@ -1,6 +1,6 @@
 var express = require("express");
 var app = express();
-var port = process.env.PORT || 3700;
+var port = process.env.PORT || 80;
 var io = require('socket.io').listen(app.listen(port));
 var Instagram = require('instagram-node-lib');
 var http = require('http');
@@ -74,7 +74,7 @@ Instagram.subscriptions.subscribe({
 
 // if you want to unsubscribe to any hashtag you subscribe
 // just need to pass the ID Instagram send as response to you
-Instagram.subscriptions.unsubscribe({ id: '20187660' });
+Instagram.subscriptions.unsubscribe({ id: '20187866' });
 
 // https://devcenter.heroku.com/articles/using-socket-io-with-node-js-on-heroku
 io.configure(function () {
@@ -92,6 +92,7 @@ io.configure(function () {
  * Set your app main configuration
  */
 app.configure(function(){
+    app.use(express.compress());
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(app.router);
