@@ -1,8 +1,16 @@
 module.exports = function(grunt) {
-
+var port = grunt.option('port') || 3700;
   // 專案設定
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    // within grunt.initConfig
+    nodemon: {
+        dev: {
+            options: {
+                nodeArgs: ['--port', port]
+            }
+        }
+    },
     concat: {
       options: {
         sourceMap :true
@@ -10,7 +18,6 @@ module.exports = function(grunt) {
       dist: {
         src: [
             'dev/assets/js/lib/socket.io.min.js',
-            'dev/assets/js/lib/jquery.1.9.min.js',
             'dev/assets/js/lib/handlebarsjs.1.0.min.js',
             'dev/assets/js/app.js'
         ],
@@ -25,7 +32,7 @@ module.exports = function(grunt) {
       },
       build: {
         src: '<%= concat.dist.dest %>',
-        dest: 'public/js/build.min.js'
+        dest: 'public/assets/js/build.min.js'
       }
     },
     jade: {
@@ -35,13 +42,22 @@ module.exports = function(grunt) {
             debug: false
           }
         },
-        files: [{
-              cwd: "src",
-              src: "*.jade",
-              dest: "dist",
-              expand: true,
-              ext: ".html"
-            }]
+        files: [
+          {
+            cwd: "dev",
+            src: "*.jade",
+            dest: "views",
+            expand: true,
+            ext: ".html"
+          },
+          {
+            cwd: "dev/wall",
+            src: "*.jade",
+            dest: "views/wall",
+            expand: true,
+            ext: ".html"
+          }
+        ]
       }
     },
     sass: {
@@ -51,9 +67,9 @@ module.exports = function(grunt) {
       dist: {
         files: [{
           expand: true,
-          cwd: 'src/assets/sass',
+          cwd: 'dev/assets/sass',
           src: '*.scss',
-          dest: 'dist/assets/stylesheets',
+          dest: 'public/assets/css',
           ext: '.css'
         }]
       }
@@ -61,9 +77,10 @@ module.exports = function(grunt) {
     watch: {
       js: {
         files: [
-          'src/assets/js/*.js',
-          'src/*.jade',
-          'src/assets/sass/*.scss'
+          'dev/assets/js/*.js',
+          'dev/*.jade',
+          'dev/wall/*.jade',
+          'dev/assets/sass/*.scss'
           ],
         tasks: ['default']
       },

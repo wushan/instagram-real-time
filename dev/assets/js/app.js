@@ -13,7 +13,7 @@
          */
         init: function() {
             this.mostRecent();
-            this.getData();
+            this.getData();//
         },
 
     
