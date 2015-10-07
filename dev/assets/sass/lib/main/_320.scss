@@ -1,0 +1,19 @@
+#wrapper {
+  @include box-sizing(border-box);
+  padding: 0 2em;
+  text-align: center;
+  position: relative;
+}
+
+.brand {
+	padding: 10em 0 3em 0;
+	img {
+		width: 100%;
+	}
+}
+
+#footer {
+	padding-top: 6em;
+  font-size: .9em;
+  color: $gray;
+}

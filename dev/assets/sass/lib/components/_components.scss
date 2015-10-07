@@ -1,0 +1,21 @@
+.transition {
+	@include transition(.3s all ease-in-out);
+}
+img {
+	display: block;
+	margin: 0 auto;
+	max-width: 100%;
+}
+
+.social-media {
+	a {
+		display: inline-block;
+		vertical-align: middle;
+		margin: 0 .2em;
+		@include opacity(.5);
+		@extend .transition;
+		&:hover {
+			@include opacity(1);
+		}
+	}
+}

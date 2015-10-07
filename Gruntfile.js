@@ -19,7 +19,8 @@ var port = grunt.option('port') || 3700;
         src: [
             'dev/assets/js/lib/socket.io.min.js',
             'dev/assets/js/lib/handlebarsjs.1.0.min.js',
-            'dev/assets/js/app.js'
+            'dev/assets/js/app.js',
+            'dev/assets/js/all.js'
         ],
         dest: '.tmp/build.js'
       }
@@ -80,7 +81,8 @@ var port = grunt.option('port') || 3700;
           'dev/assets/js/*.js',
           'dev/*.jade',
           'dev/wall/*.jade',
-          'dev/assets/sass/*.scss'
+          'dev/assets/sass/*.scss',
+          'dev/assets/sass/**/*.scss'
           ],
         tasks: ['default']
       },
