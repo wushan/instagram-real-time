@@ -18,7 +18,6 @@ var port = grunt.option('port') || 3700;
       dist: {
         src: [
             'dev/assets/js/lib/socket.io.min.js',
-            'dev/assets/js/lib/handlebarsjs.1.0.min.js',
             'dev/assets/js/app.js',
             'dev/assets/js/all.js'
         ],
@@ -34,6 +33,12 @@ var port = grunt.option('port') || 3700;
       build: {
         src: '<%= concat.dist.dest %>',
         dest: 'public/assets/js/build.min.js'
+      },
+      my_target: {
+        files: {
+          'public/assets/js/loader.js': ['dev/assets/js/loader.js'],
+          'public/assets/js/lib/socket.io.min.js': ['dev/assets/js/lib/socket.io.min.js']
+        }
       }
     },
     jade: {

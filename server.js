@@ -1,6 +1,6 @@
 var express = require("express");
 var app = express();
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 3700;
 var io = require('socket.io').listen(app.listen(port));
 var Instagram = require('instagram-node-lib');
 var http = require('http');
@@ -110,7 +110,7 @@ app.get("/views", function(req, res){
 
 // check subscriptions
 // https://api.instagram.com/v1/subscriptions?client_secret=YOUR_CLIENT_ID&client_id=YOUR_CLIENT_SECRET
-
+//https://api.instagram.com/v1/subscriptions?client_secret=868a4f87cb99458683a720aeeea884f4&client_id=5c4e60cc6de3451187b3d276d173ca62
 /**
  * On socket.io connection we get the most recent posts
  * and send to the client side via socket.emit

@@ -1,2 +1,10 @@
-p.
-	this is a test file
+extends ../_layout.jade
+
+block content
+	#list
+
+block scripts
+	script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js")
+	script(src='/assets/js/lib/socket.io.min.js')
+	script(src='/assets/js/loader.js')
+	script(src='http://localhost:35729/livereload.js')
