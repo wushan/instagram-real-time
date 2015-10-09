@@ -37,7 +37,9 @@ var port = grunt.option('port') || 3700;
       my_target: {
         files: {
           'public/assets/js/loader.js': ['dev/assets/js/loader.js'],
-          'public/assets/js/lib/socket.io.min.js': ['dev/assets/js/lib/socket.io.min.js']
+          'public/assets/js/lib/socket.io.min.js': ['dev/assets/js/lib/socket.io.min.js'],
+          'public/assets/js/lib/masonry.pkgd.min.js': ['dev/assets/js/lib/masonry.pkgd.min.js']
+        
         }
       }
     },

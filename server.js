@@ -1,6 +1,7 @@
 var express = require("express");
 var app = express();
-var port = process.env.PORT || 3700;
+var port = process.env.PORT || 80;
+// var port = process.env.PORT || 3700;
 var io = require('socket.io').listen(app.listen(port));
 var Instagram = require('instagram-node-lib');
 var http = require('http');
@@ -37,7 +38,7 @@ Instagram.set('maxSockets', 10);
  */
 Instagram.subscriptions.subscribe({
   object: 'tag',
-  object_id: 'dog',
+  object_id: 'sunset',
   aspect: 'media',
   callback_url: 'http://middlemiddle.com/callback',
   type: 'subscription',
@@ -74,7 +75,7 @@ Instagram.subscriptions.subscribe({
 
 // if you want to unsubscribe to any hashtag you subscribe
 // just need to pass the ID Instagram send as response to you
-Instagram.subscriptions.unsubscribe({ id: '20187866' });
+Instagram.subscriptions.unsubscribe({ id: '20220865' });
 
 // https://devcenter.heroku.com/articles/using-socket-io-with-node-js-on-heroku
 io.configure(function () {
@@ -117,7 +118,7 @@ app.get("/views", function(req, res){
  */
 io.sockets.on('connection', function (socket) {
   Instagram.tags.recent({
-      name: 'dog',
+      name: 'sunset',
       complete: function(data) {
         socket.emit('firstShow', { firstShow: data });
       }

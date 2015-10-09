@@ -1,6 +1,12 @@
+var $grid = $('#list').masonry({
+              itemSelector: '.block',
+              columnWidth: '.grid-sizer',
+              percentPosition: true
+            });
 (function() {
+    // var socket = io.connect('localhost');
     var socket = io.connect('http://middlemiddle.com');
-
+    var i = 0;
     /**
      * [Namespacing]
      */
@@ -56,7 +62,21 @@
                 instaHTML = "<div class='block'><a href='" + instaAnchor + "'><img src='" + instaPicture + "'/></a><div class='instainfos'><p>Posted:" + instaTime + "</p></div></div>";
             }
             // INSERT THE GALLERY
-            $('#list').prepend(instaHTML);
+            $grid.masonry( 'prepended', instaHTML );
+            // $('#list').prepend(instaHTML);
+            //Remove repeated
+            last = $('#list .block:first-child');
+            lastSrc = $('#list .block:first-child').find('img').attr('src');
+            nextSrc = $('#list .block:nth-child(2)').find('img').attr('src');
+
+            if( lastSrc === nextSrc ) {
+                // last.remove();
+                $grid.masonry( 'remove', last );
+            }
+
+            // $grid.masonry('reloadItems');
+            $grid.masonry('layout');
+
         },
 
         /**
@@ -65,10 +85,11 @@
         mostRecent: function() {
             socket.on('firstShow', function (data) {
                 var query = data;
-                console.log(query);
-                console.log(query.firstShow.length);
+                // console.log(query);
+                // console.log(query.firstShow.length);
                 for (var i = 0; i < query.firstShow.length && i < 25; i++) {
                     // GET THE PICTURE
+                    console.log(i);
                     var instaPicture = query.firstShow[i].images.standard_resolution.url;
                     var AspectW = query.firstShow[i].images.standard_resolution.width;
                     var AspectH = query.firstShow[i].images.standard_resolution.height;
@@ -83,9 +104,12 @@
                         instaHTML = "<div class='block'><a href='" + instaAnchor + "'><img src='" + instaPicture + "'/></a><div class='instainfos'><p>Posted:" + instaTime + "</p></div></div>";
                     };
                     // INSERT THE GALLERY
-                    $('#list').prepend(instaHTML);
-                    // console.log(instaHTML);
+                    // $('#list').append(instaHTML);
+                    $grid.masonry( 'prepended', instaHTML );
                 };
+                
+                $grid.masonry('layout');
+                console.log('done');
             });
         },
 
@@ -94,5 +118,4 @@
     };
 
     Insta.App.init();
-
 })(this);

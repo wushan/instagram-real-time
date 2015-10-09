@@ -1,3 +1,10 @@
+.clr {
+	&:before, &:after {
+		content: '';
+		display: block;
+		clear: both;
+	}
+}
 .transition {
 	@include transition(.3s all ease-in-out);
 }

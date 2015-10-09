@@ -12,6 +12,40 @@
 	}
 }
 
+#list {
+  @extend .clr;
+  .grid-sizer {
+    width: 25%;
+  }
+
+  .block {
+    width: 25%;
+    position: relative;
+    a {
+      display: block;
+    }
+    img {
+      @include filter(grayscale(50%));
+      width: 100%;
+    }
+    &.wide {
+      width: 50%;
+    }
+  }
+}
+
+.instainfos {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  @include box-sizing(border-box);
+  padding: 1em;
+  word-break: break-all;
+  p {
+    margin: 0;
+  }
+}
+
 #footer {
 	padding-top: 6em;
   font-size: .9em;
