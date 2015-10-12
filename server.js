@@ -19,8 +19,8 @@ var pub = __dirname + '/public',
  * Set the 'client ID' and the 'client secret' to use on Instagram
  * @type {String}
  */
-var clientID = '5c4e60cc6de3451187b3d276d173ca62',
-    clientSecret = '868a4f87cb99458683a720aeeea884f4';
+var clientID = '1ef4bf16979c442a8674cb1b58f79bca',
+    clientSecret = 'fba9a00c391e493bba5080845f58f249';
 
 /**
  * Set the configuration
@@ -111,7 +111,7 @@ app.get("/views", function(req, res){
 
 // check subscriptions
 // https://api.instagram.com/v1/subscriptions?client_secret=YOUR_CLIENT_ID&client_id=YOUR_CLIENT_SECRET
-//https://api.instagram.com/v1/subscriptions?client_secret=868a4f87cb99458683a720aeeea884f4&client_id=5c4e60cc6de3451187b3d276d173ca62
+// https://api.instagram.com/v1/subscriptions?client_secret=fba9a00c391e493bba5080845f58f249&client_id=1ef4bf16979c442a8674cb1b58f79bca
 /**
  * On socket.io connection we get the most recent posts
  * and send to the client side via socket.emit
