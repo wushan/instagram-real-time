@@ -69,6 +69,7 @@
 
             // $grid.masonry('reloadItems');
             $grid.masonry();
+            console.log('layoutinsta');
 
         },
 
@@ -102,10 +103,12 @@
                     $grid.append( $instaHTML ).masonry('appended', $instaHTML);
                     console.log(i);
                 }
+                // $grid.masonry('layout');
+                // console.log('layout');
                 $grid.imagesLoaded().progress( function() {
                   $grid.masonry('layout');
+                  console.log('layout');
                 });
-                console.log('done');
             });
         }
     };

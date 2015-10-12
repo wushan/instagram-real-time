@@ -11,18 +11,30 @@ var port = grunt.option('port') || 3700;
             }
         }
     },
-    
+    concat: {
+      options: {
+        sourceMap :true
+      },
+      dist: {
+        src: [
+            'dev/assets/js/lib/socket.io.min.js',
+            'dev/assets/js/lib/masonry.pkgd.min.js',
+            'dev/assets/js/lib/imageloaded.js',
+            'dev/assets/js/all.js',
+            'dev/assets/js/loader.js'
+        ],
+        dest: '.tmp/build.js'
+      }
+    },
     uglify: {
-      
-      my_target: {
-        files: {
-          'public/assets/js/imageloaded.min.js': ['dev/assets/js/lib/imageloaded.js'],
-          'public/assets/js/loader.js': ['dev/assets/js/loader.js'],
-          'public/assets/js/lib/socket.io.min.js': ['dev/assets/js/lib/socket.io.min.js'],
-          'public/assets/js/lib/masonry.pkgd.min.js': ['dev/assets/js/lib/masonry.pkgd.min.js'],
-          'public/assets/js/all.js': ['dev/assets/js/all.js']
-        
-        }
+      options: {
+        sourceMap: true,
+        sourceMapIncludeSources: true,
+        sourceMapIn: '.tmp/build.js.map'
+      },
+      build: {
+        src: '<%= concat.dist.dest %>',
+        dest: 'public/assets/js/build.min.js'
       }
     },
     jade: {
@@ -93,7 +105,7 @@ var port = grunt.option('port') || 3700;
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // 預設的 task
-  grunt.registerTask('default', ['sass','jade','uglify']);
+  grunt.registerTask('default', ['sass','jade','concat','uglify']);
   grunt.registerTask('dev', [
     'watch'
     ]);
