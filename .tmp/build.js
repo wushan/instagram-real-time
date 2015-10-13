@@ -43,8 +43,8 @@ ga('create', 'UA-68400394-1', 'auto');
 ga('send', 'pageview');
 
 (function() {
-    // var socket = io.connect('localhost');
-    var socket = io.connect('http://middlemiddle.com');
+    var socket = io.connect('localhost');
+    // var socket = io.connect('http://middlemiddle.com');
     /**
      * [Namespacing]
      */

@@ -1,12 +1,33 @@
 var express = require("express");
 var app = express();
-// var port = process.env.PORT || 80;
-var port = process.env.PORT || 3700;
+var port = process.env.PORT || 80;
+// var port = process.env.PORT || 3700;
 var io = require('socket.io').listen(app.listen(port));
 var Instagram = require('instagram-node-lib');
 var http = require('http');
-var request = ('request');
+// var request = ('request');
 var intervalID;
+var request = require('request');
+var mkdirp = require('mkdirp');
+var fs = require('fs');
+//Download
+var download = function(uri, filename, callback){
+  request.head(uri, function(err, res, body){
+    console.log('content-type:', res.headers['content-type']);
+    console.log('content-length:', res.headers['content-length']);
+
+    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+  });
+};
+// request
+//   .get('https://www.google.com.tw/images/nav_logo231.png')
+//   .on('response', function(response) {
+//     console.log(response.statusCode) // 200
+//     console.log(response.headers['content-type']) // 'image/png'
+//   })
+
+// //Save image
+// request('https://www.google.com.tw/images/nav_logo231.png').pipe(fs.createWriteStream('doodle.png'));
 
 /**
  * Set the paths for your files
@@ -121,6 +142,44 @@ io.sockets.on('connection', function (socket) {
       name: 'sunset',
       complete: function(data) {
         socket.emit('firstShow', { firstShow: data });
+        //Create Folder Structure and save images in the right place.
+        var i = 0;
+        for (var i = 0; i < data.length && i < 25; i++) {
+            // GET THE PICTURE
+            var instaPicture = data[i].images.standard_resolution.url;
+            var createTime = data[i].created_time;
+            var userName = data[i].user.username;
+            var date = new Date(createTime*1000);
+            var year = date.getFullYear();
+            var month = date.getMonth();
+            var day = date.getDate();
+            var hours = date.getHours();
+            // Minutes part from the timestamp
+            var minutes = date.getMinutes();
+            // Seconds part from the timestamp
+            var seconds = date.getSeconds();
+            var formattedStamp = year.toString() + month.toString() + day.toString() + '-' + hours + '-' + minutes + '-' + seconds;
+            var pathToDir = year.toString() + '/' + month.toString() + '/' + day.toString();
+            //MAKE DIR
+            mkdirp(pathToDir, function (err) {
+                if (err){
+                  console.error(err);
+                } else {
+                  // console.log('success');
+                }
+            });
+            //Save image
+            // request
+            //   .get(instaPicture)
+            //   .on('error', function(err) {
+            //     console.log(err)
+            //   })
+            //   .pipe(fs.createWriteStream(pathToDir + '/' + formattedStamp + '-' + userName + '.png'))
+            // request(instaPicture).pipe(fs.createWriteStream(pathToDir + '/' + formattedStamp + '-' + userName + '.png'));
+            download(instaPicture, pathToDir + '/' + formattedStamp + '-' + userName + '.png', function(){
+              console.log('done');
+            });
+        }
       }
   });
 });
@@ -143,7 +202,7 @@ app.post('/callback', function(req, res) {
     data.forEach(function(tag) {
       var url = 'https://api.instagram.com/v1/tags/' + tag.object_id + '/media/recent?client_id='+clientID;
       sendMessage(url);
-
+      //組成 url
     });
     res.end();
 });
@@ -154,6 +213,7 @@ app.post('/callback', function(req, res) {
  * @param  {[string]} url [the url as string with the hashtag]
  */
 function sendMessage(url) {
+  //send url to frontend
   io.sockets.emit('show', { show: url });
 }
 
