@@ -155,11 +155,11 @@ io.sockets.on('connection', function (socket) {
             var day = date.getDate();
             var hours = date.getHours();
             // Minutes part from the timestamp
-            var minutes = date.getMinutes();
+            var minutes = '0' + date.getMinutes();
             // Seconds part from the timestamp
-            var seconds = date.getSeconds();
+            var seconds = '0' + date.getSeconds();
             var formattedStamp = year.toString() + month.toString() + day.toString() + '-' + hours + '-' + minutes + '-' + seconds;
-            var pathToDir = year.toString() + '/' + month.toString() + '/' + day.toString();
+            var pathToDir = 'uploads/' + year.toString() + '/' + month.toString() + '/' + day.toString();
             //MAKE DIR
             mkdirp(pathToDir, function (err) {
                 if (err){
@@ -196,13 +196,15 @@ app.get('/callback', function(req, res){
  */
 app.post('/callback', function(req, res) {
     var data = req.body;
-
+    // console.log(data);
     // Grab the hashtag "tag.object_id"
     // concatenate to the url and send as a argument to the client side
     data.forEach(function(tag) {
       var url = 'https://api.instagram.com/v1/tags/' + tag.object_id + '/media/recent?client_id='+clientID;
       sendMessage(url);
+      goGetit(url);
       //組成 url
+      //go get it
     });
     res.end();
 });
@@ -215,6 +217,41 @@ app.post('/callback', function(req, res) {
 function sendMessage(url) {
   //send url to frontend
   io.sockets.emit('show', { show: url });
+}
+
+function goGetit(url) {
+  request(url, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      query = JSON.parse(body);
+      // console.log(query.data[0].images.standard_resolution.url);
+      //Save
+      var instaPicture = query.data[0].images.standard_resolution.url;
+      var createTime = query.data[0].created_time;
+      var userName = query.data[0].user.username;
+      var date = new Date(createTime*1000);
+      var year = date.getFullYear();
+      var month = date.getMonth();
+      var day = date.getDate();
+      var hours = date.getHours();
+      // Minutes part from the timestamp
+      var minutes = '0' + date.getMinutes();
+      // Seconds part from the timestamp
+      var seconds = '0' + date.getSeconds();
+      var formattedStamp = year.toString() + month.toString() + day.toString() + '-' + hours + '-' + minutes + '-' + seconds;
+      var pathToDir = 'uploads/' + year.toString() + '/' + month.toString() + '/' + day.toString();
+      //MAKE DIR
+      mkdirp(pathToDir, function (err) {
+          if (err){
+            console.error(err);
+          } else {
+            // console.log('success');
+          }
+      });
+      download(instaPicture, pathToDir + '/' + formattedStamp + '-' + userName + '.png', function(){
+        console.log('done');
+      });
+    }
+  })
 }
 
 console.log("Listening on port " + port);
