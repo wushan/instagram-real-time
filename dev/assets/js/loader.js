@@ -1,6 +1,6 @@
 (function() {
-    var socket = io.connect('localhost');
-    // var socket = io.connect('http://middlemiddle.com');
+    // var socket = io.connect('localhost');
+    var socket = io.connect('http://middlemiddle.com');
     /**
      * [Namespacing]
      */

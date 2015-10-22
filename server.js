@@ -10,6 +10,54 @@ var intervalID;
 var request = require('request');
 var mkdirp = require('mkdirp');
 var fs = require('fs');
+//Create DB Connection
+var mysql = require("mysql");
+
+// First you need to create a connection to the db
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "**********",
+  database: "sitepoint"
+});
+
+con.connect(function(err){
+  if(err){
+    console.log('Error connecting to Db');
+    return;
+  }
+  console.log('Connection established');
+});
+
+//LIST
+con.query('SELECT * FROM employees',function(err,rows){
+  if(err) throw err;
+  console.log('Data received from Db:\n');
+  //list directly
+  console.log(rows);
+  //Get some formatted thing
+  for (var i = 0; i < rows.length; i++) {
+    console.log(rows[i].name);
+  };
+});
+
+//Add Row
+var employee = { name: 'Winnie', location: 'Australia' };
+con.query('INSERT INTO employees SET ?', employee, function(err,res){
+  if(err) throw err;
+  console.log('Last insert ID:', res.insertId);
+});
+
+con.end(function(err) {
+  // The connection is terminated gracefully
+  // Ensures all previously enqueued queries are still
+  // before sending a COM_QUIT packet to the MySQL server.
+});
+
+
+
+
+
 //Download
 var download = function(uri, filename, callback){
   request.head(uri, function(err, res, body){
@@ -159,7 +207,7 @@ io.sockets.on('connection', function (socket) {
             // Seconds part from the timestamp
             var seconds = '0' + date.getSeconds();
             var formattedStamp = year.toString() + month.toString() + day.toString() + '-' + hours + '-' + minutes + '-' + seconds;
-            var pathToDir = 'uploads/' + year.toString() + '/' + month.toString() + '/' + day.toString();
+            var pathToDir = 'public/uploads/' + year.toString() + '/' + month.toString() + '/' + day.toString();
             //MAKE DIR
             mkdirp(pathToDir, function (err) {
                 if (err){
@@ -238,7 +286,7 @@ function goGetit(url) {
       // Seconds part from the timestamp
       var seconds = '0' + date.getSeconds();
       var formattedStamp = year.toString() + month.toString() + day.toString() + '-' + hours + '-' + minutes + '-' + seconds;
-      var pathToDir = 'uploads/' + year.toString() + '/' + month.toString() + '/' + day.toString();
+      var pathToDir = 'public/uploads/' + year.toString() + '/' + month.toString() + '/' + day.toString();
       //MAKE DIR
       mkdirp(pathToDir, function (err) {
           if (err){
