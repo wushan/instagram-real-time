@@ -1,7 +1,7 @@
 var express = require("express");
 var app = express();
-var port = process.env.PORT || 80;
-// var port = process.env.PORT || 3700;
+// var port = process.env.PORT || 80;
+var port = process.env.PORT || 3700;
 var io = require('socket.io').listen(app.listen(port));
 var Instagram = require('instagram-node-lib');
 var http = require('http');
@@ -63,7 +63,6 @@ var download = function(uri, filename, callback){
   request.head(uri, function(err, res, body){
     console.log('content-type:', res.headers['content-type']);
     console.log('content-length:', res.headers['content-length']);
-
     request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
   });
 };
@@ -113,34 +112,6 @@ Instagram.subscriptions.subscribe({
   type: 'subscription',
   id: '#'
 });
-
-/**
- * Uses the library "instagram-node-lib" to Subscribe to the Instagram API Real Time
- * with the tag "hashtag" lollapalooza2013
- * @type {String}
- */
-// Instagram.subscriptions.subscribe({
-//   object: 'tag',
-//   object_id: 'lollapalooza2013',
-//   aspect: 'media',
-//   callback_url: 'http://middlemiddle.com/callback',
-//   type: 'subscription',
-//   id: '#'
-// });
-
-/**
- * Uses the library "instagram-node-lib" to Subscribe to the Instagram API Real Time
- * with the tag "hashtag" lolla2013
- * @type {String}
- */
-// Instagram.subscriptions.subscribe({
-//   object: 'tag',
-//   object_id: 'lolla2013',
-//   aspect: 'media',
-//   callback_url: 'http://middlemiddle.com/callback',
-//   type: 'subscription',
-//   id: '#'
-// });
 
 // if you want to unsubscribe to any hashtag you subscribe
 // just need to pass the ID Instagram send as response to you
@@ -202,9 +173,7 @@ io.sockets.on('connection', function (socket) {
             var month = date.getMonth();
             var day = date.getDate();
             var hours = date.getHours();
-            // Minutes part from the timestamp
             var minutes = '0' + date.getMinutes();
-            // Seconds part from the timestamp
             var seconds = '0' + date.getSeconds();
             var formattedStamp = year.toString() + month.toString() + day.toString() + '-' + hours + '-' + minutes + '-' + seconds;
             var pathToDir = 'public/uploads/' + year.toString() + '/' + month.toString() + '/' + day.toString();
@@ -216,14 +185,7 @@ io.sockets.on('connection', function (socket) {
                   // console.log('success');
                 }
             });
-            //Save image
-            // request
-            //   .get(instaPicture)
-            //   .on('error', function(err) {
-            //     console.log(err)
-            //   })
-            //   .pipe(fs.createWriteStream(pathToDir + '/' + formattedStamp + '-' + userName + '.png'))
-            // request(instaPicture).pipe(fs.createWriteStream(pathToDir + '/' + formattedStamp + '-' + userName + '.png'));
+            //Download image
             download(instaPicture, pathToDir + '/' + formattedStamp + '-' + userName + '.png', function(){
               console.log('done');
             });
@@ -244,15 +206,14 @@ app.get('/callback', function(req, res){
  */
 app.post('/callback', function(req, res) {
     var data = req.body;
-    // console.log(data);
     // Grab the hashtag "tag.object_id"
     // concatenate to the url and send as a argument to the client side
     data.forEach(function(tag) {
       var url = 'https://api.instagram.com/v1/tags/' + tag.object_id + '/media/recent?client_id='+clientID;
       sendMessage(url);
+      //把 url 丟給 function sendMessage -> 給前端
       goGetit(url);
-      //組成 url
-      //go get it
+      //把 url 丟給 function goGetit -> 下載
     });
     res.end();
 });
@@ -263,16 +224,17 @@ app.post('/callback', function(req, res) {
  * @param  {[string]} url [the url as string with the hashtag]
  */
 function sendMessage(url) {
-  //send url to frontend
+  //把 Url 送給前端執行 ajax request
   io.sockets.emit('show', { show: url });
 }
 
 function goGetit(url) {
+  //Request the 'url' and get response data (json)
   request(url, function (error, response, body) {
+    //如果成功
     if (!error && response.statusCode == 200) {
+      //parse JSON data
       query = JSON.parse(body);
-      // console.log(query.data[0].images.standard_resolution.url);
-      //Save
       var instaPicture = query.data[0].images.standard_resolution.url;
       var createTime = query.data[0].created_time;
       var userName = query.data[0].user.username;
@@ -281,9 +243,7 @@ function goGetit(url) {
       var month = date.getMonth();
       var day = date.getDate();
       var hours = date.getHours();
-      // Minutes part from the timestamp
       var minutes = '0' + date.getMinutes();
-      // Seconds part from the timestamp
       var seconds = '0' + date.getSeconds();
       var formattedStamp = year.toString() + month.toString() + day.toString() + '-' + hours + '-' + minutes + '-' + seconds;
       var pathToDir = 'public/uploads/' + year.toString() + '/' + month.toString() + '/' + day.toString();
@@ -298,6 +258,9 @@ function goGetit(url) {
       download(instaPicture, pathToDir + '/' + formattedStamp + '-' + userName + '.png', function(){
         console.log('done');
       });
+    } else {
+      //Request 錯誤
+      console.log(error);
     }
   })
 }
